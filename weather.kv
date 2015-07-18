@@ -1,43 +1,72 @@
 #these import statements are similar to python and exist because sometimes it #is needed to access to python modules in kivy language other than those #already available magically in the kivy builder process during compiling
-#:import ListItemButton kivy.uix.listview.ListItemButton
+#:import main main
 #:import ListAdapter kivy.adapters.listadapter.ListAdapter
 WeatherRoot:
 <WeatherRoot>:
-	AddLocationForm:
-		orientation:'vertical'
-		search_input:search_input_1
-		search_results:search_result_1
- 		#remember that the addlocationform inherits from the boxlayout 
-		BoxLayout:
-			size_hint_y:.10
-			TextInput:
-				id:search_input_1
-				size_hint_x:1
-				multiline:False
-			Button:
-				size_hint_x:1
-				text:'SEARCH'
-				on_press:self.parent.parent.search_location()
-			Button:
-				size_hint_x:1
-				text:'CURRENT LOCATION'
-		ListView:
-			id:search_result_1
-			adapter:
-				ListAdapter(data=[],cls=ListItemButton)
-				#This is the boundry between the python code and the kivy code,
-				#ListAdapter class sits between the Listview and data.The 
-				#listadapter object is passed the listitembutton class.
-				#work done by listadapter 
-				#1.keeping track of which item is selected
-				#2.Making sure that the view stays up
-				#3.mapping data between between input format and widget 
-				#properties
-			size_hint_y:.90
-			item_strings:[]
+	CoverPage:
+<AddLocationForm>:
+	orientation:'vertical'
+	search_input:search_input_1
+	search_results:search_result_1
+ 	#remember that the addlocationform inherits from the boxlayout 
+	BoxLayout:
+		size_hint_y:.10
+		TextInput:
+			id:search_input_1
+			size_hint_x:1
+			multiline:False
+		Button:
+			size_hint_x:1
+			text:'SEARCH'
+			on_press:self.parent.parent.search_location()
+		Button:
+			size_hint_x:1
+			text:'CURRENT LOCATION'
+	ListView:
+		id:search_result_1
+		adapter:
+			ListAdapter(data=[],cls=main.LocationButton)
+			#This is the boundry between the python code and the kivy code,
+			#ListAdapter class sits between the Listview and data.The 
+			#listadapter object is passed the listitembutton class.
+			#work done by listadapter 
+			#1.keeping track of which item is selected
+			#2.Making sure that the view stays up
+			#3.mapping data between between input format and widget 				#properties
+		size_hint_y:.90
+		item_strings:[]
 		Button:
 			text:'Cancel'
 			size_hint_y:.10
+<LocationButton>:			#angle brackets are used when rules of the class 
+							#are to be specified while without brackets is #Instance 
+	on_press:app.root.show_current_weather(self.text)
+<CurrentLocation@BoxLayout>:
+	location:None
+	temp:None
+	conditions:None
+	orientation:'vertical'
+	Label:
+		text:'hello'
+	BoxLayout:
+		orientation:'horizontal'
+		size_hint_y:None
+		height:'40dp'
+		Button:
+			text:'ADD LOCATION'
+			on_press:app.root.addlocation()
+		Button:
+			text:'FORECAST'
+<CoverPage>:
+	orientation:'vertical'
+	Label:
+		size_hint_y:0.8
+		text:'Welcome to my app'
+	Button:
+		text:'Enter to start'
+		size_hint_y:0.2
+		on_press:app.root.addlocation()
+
 
 
 
