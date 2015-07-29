@@ -13,8 +13,10 @@ WeatherRoot:
 		size_hint_y:.10
 		TextInput:
 			id:search_input_1
+			focus:True
 			size_hint_x:1
 			multiline:False
+			on_text_validate:self.parent.parent.search_location()
 		Button:
 			size_hint_x:1
 			text:'SEARCH'
@@ -25,7 +27,10 @@ WeatherRoot:
 	ListView:
 		id:search_result_1
 		adapter:
-			ListAdapter(data=[],cls=main.LocationButton)
+			ListAdapter(data=[],cls=main.LocationButton,args_converter=app.root.args_converter)
+			#List adapter expects to take strings or rather list of the strings
+			#so changing to tuple format is not compatible here or the 
+			#program crashes.........
 			#This is the boundry between the python code and the kivy code,
 			#ListAdapter class sits between the Listview and data.The 
 			#listadapter object is passed the listitembutton class.
@@ -38,16 +43,29 @@ WeatherRoot:
 		Button:
 			text:'Cancel'
 			size_hint_y:.10
-<LocationButton>:			#angle brackets are used when rules of the class 
-							#are to be specified while without brackets is #Instance 
-	on_press:app.root.show_current_weather(self.text)
-<CurrentLocation@BoxLayout>:
-	location:None
-	temp:None
-	conditions:None
+			on_press:app.root.show_current_weather(None)
+<LocationButton>:
+	id:location			#angle brackets are used when rules of the class 
+	text:"{}({})".format(self.location[0],self.location[1])
+	height:"40dp"
+	size_hint_y:None
+	on_press:app.root.show_current_weather(self.location)
+<CurrentLocation>:
+	id:current_weather
+	location: ['New York', 'US']
 	orientation:'vertical'
 	Label:
-		text:'hello'
+		text:"{}({})".format(root.location[0],root.location[1])
+		font_size:"48sp"
+	Label:
+		text:"The conditions are : {}".format(root.conditions)
+		font_size:"30sp"
+	Label:
+		text:"The wind speed is : {}".format(root.wind)
+	Label:
+		text:"The max temperature is : {}".format(root.temp_max)
+	Label:
+		text:"The current temperature is : {}".format(root.temp)
 	BoxLayout:
 		orientation:'horizontal'
 		size_hint_y:None
@@ -60,11 +78,11 @@ WeatherRoot:
 <CoverPage>:
 	orientation:'vertical'
 	Label:
-		size_hint_y:0.8
+		size_hint_y:0.91
 		text:'Welcome to my app'
 	Button:
 		text:'Enter to start'
-		size_hint_y:0.2
+		size_hint_y:0.09
 		on_press:app.root.addlocation()
 
 
