@@ -2,7 +2,8 @@
 A weather app in kivy and python
 This is an app meant for retrieving weather conditions of places.
 It is an app written on kivy framework.
-Kivy is a open-soure framework for software designing written in python.The kivy framework can be used using the kivy language.
+Kivy is a open-soure framework for software designing written in python.
+The kivy framework can be used using the kivy language.
 Kivy language(.kv) is a domain specific language .
 This app uses the api of the openweatherapp.org for retrieving weather conditions
 It is cross-platform and works on all major platforms as described below.
